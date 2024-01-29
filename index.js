@@ -41,7 +41,7 @@ class Musician {
     // збільшення значення статичного поля на 1
     this.#name = name;
     this.#instrument = instrument;
-    this.count += 1;
+    Musician.count++;
   }
 
   get name() {
@@ -223,7 +223,7 @@ class Bassist extends Musician {
 // Третій аргумент - це об'єкт, який описує властивість. У цьому випадку ми хочемо додати сетер,
 // тому ми вказуємо функцію, яка буде викликатися при спробі встановити властивість 'band'.  this.band = newBand\
 Object.defineProperty(Musician.prototype, "band", {
-  set band(newBand) {
+  set: function (newBand) {
     this.band = newBand;
   },
 });
@@ -257,7 +257,7 @@ class Band {
 
   constructor(name, members) {
     this.#name = name;
-    this.#members = members;
+    this.#members = [...members];
   }
 
   get name() {
@@ -274,6 +274,7 @@ class Band {
 
   addMember(newMember) {
     if (newMember instanceof Musician) {
+      newMember.band = this.#name;
       this.#members.push(newMember);
     } else {
       console.log("Новий учасник повинен бути екземпляром класу Musician");
@@ -281,7 +282,7 @@ class Band {
   }
 
   playMusic() {
-    this.#members.forEach((element) => element.play);
+    this.#members.forEach((element) => element.play());
   }
 }
 
